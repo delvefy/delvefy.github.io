@@ -249,6 +249,37 @@
       overflow: hidden;
     }
 
+    /* ── Read button ────────────────────────────── */
+    .read-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.8rem;
+      padding: 0.4rem 0.85rem;
+      border: 1px solid var(--border-hi);
+      border-radius: var(--radius);
+      color: var(--teal);
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      align-self: flex-start;
+      transition: background 150ms, border-color 150ms;
+    }
+
+    .read-btn:hover {
+      background: var(--teal-dim);
+      border-color: var(--teal);
+    }
+
+    .read-btn-icon {
+      width: 0.9rem;
+      height: 0.9rem;
+      object-fit: contain;
+      flex-shrink: 0;
+      border-radius: 2px;
+    }
+
     /* ── Patreon CTA ────────────────────────────── */
     .patreon-cta {
       display: flex;
@@ -424,6 +455,7 @@
     <h2 class="work-title">${esc(el.title)}</h2>
     ${el.subtitle ? `<p class="work-subtitle">${esc(el.subtitle)}</p>` : ''}
     ${el.text     ? `<p class="work-text">${esc(el.text)}</p>` : ''}
+    ${el.royalroad ? `<a class="read-btn" href="${esc(el.royalroad)}" target="_blank" rel="noopener noreferrer"><img class="read-btn-icon" src="https://www.royalroad.com/favicon.ico" alt="Royal Road">Read</a>` : ''}
   </div>
 </div>`).join('');
     }
