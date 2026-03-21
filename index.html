@@ -442,8 +442,8 @@
     function renderSocial(elements) {
       return `<div class="social-strip">${elements.map(el => {
         const href   = el.url || '#';
-        const target = href !== '#' ? ' target="_blank" rel="noopener noreferrer"' : '';
-        return `<a class="social-link" href="${esc(href)}"${target}>
+        const target = href !== '#' ? ' target="_blank"' : '';
+        return `<a class="social-link" href="${esc(href)}"${target} rel="noopener noreferrer">
   ${ICONS[el.platform] || ''}
   <span>${esc(el.title)}</span>
 </a>`;
