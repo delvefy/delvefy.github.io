@@ -123,7 +123,7 @@
     #content {
       position: relative;
       z-index: 1;
-      padding: 5.75rem 1.25rem 5rem;
+      padding: 5.75rem 1.25rem 2rem;
       max-width: 640px;
       margin: 0 auto;
       width: 100%;
@@ -423,6 +423,49 @@
       padding: 3rem 1rem;
     }
 
+    /* ── Newsletter ─────────────────────────────── */
+    .newsletter-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .newsletter-desc {
+      font-size: 1.05rem;
+      color: var(--text-body);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Kit embed overrides */
+    #newsletter-embed .formkit-form { background: transparent !important; border: none !important; padding: 0 !important; }
+    #newsletter-embed .formkit-field input { background: var(--surface-2) !important; border: 1px solid var(--border) !important; border-radius: var(--radius) !important; color: var(--text) !important; font-family: 'Crimson Text', Georgia, serif !important; font-size: 1rem !important; }
+    #newsletter-embed .formkit-field input::placeholder { color: var(--text-muted) !important; }
+    #newsletter-embed .formkit-submit, #newsletter-embed [data-element="submit"] button { background: var(--teal-dim) !important; border: 1px solid rgba(45,212,191,0.3) !important; color: var(--teal) !important; font-family: 'Cinzel', serif !important; font-size: 0.62rem !important; letter-spacing: 0.16em !important; text-transform: uppercase !important; border-radius: var(--radius) !important; }
+    #newsletter-embed .formkit-powered-by-convertkit-container { display: none !important; }
+
+    /* ── Footer ─────────────────────────────────── */
+    #site-footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 1rem 1.25rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-email {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 150ms;
+    }
+
+    .footer-email:hover { color: var(--teal); }
+
     /* ── Focus ──────────────────────────────────── */
     :focus-visible {
       outline: 1px solid var(--teal);
@@ -473,6 +516,9 @@
         <span class="loading-label">Loading</span>
       </div>
     </main>
+    <footer id="site-footer">
+      <a class="footer-email" href="mailto:contact@victorblackauthor.com">contact@victorblackauthor.com</a>
+    </footer>
   </div>
 
   <script>
@@ -550,11 +596,32 @@
 </a>`;
     }
 
+    function renderNewsletter(elements) {
+      const el = elements[0];
+      if (!el) return '';
+      return `
+<p class="newsletter-label">Newsletter</p>
+${el.text ? `<p class="newsletter-desc">${esc(el.text)}</p>` : ''}
+<div id="newsletter-embed"></div>`;
+    }
+
+    function injectNewsletterScript(el) {
+      if (!el.scriptSrc || !el.scriptUid) return;
+      const container = document.getElementById('newsletter-embed');
+      if (!container) return;
+      const s = document.createElement('script');
+      s.async = true;
+      s.setAttribute('data-uid', el.scriptUid);
+      s.src = el.scriptSrc;
+      container.appendChild(s);
+    }
+
     const SECTION_RENDERERS = {
-      author:  renderAuthor,
-      social:  renderSocial,
-      works:   renderWorks,
-      patreon: renderPatreon,
+      author:     renderAuthor,
+      social:     renderSocial,
+      works:      renderWorks,
+      patreon:    renderPatreon,
+      newsletter: renderNewsletter,
     };
 
     /* ── Bootstrap ─────────────────────────────── */
@@ -574,6 +641,9 @@
           return `<section class="page-section" id="section-${esc(s.id)}">${html}</section>`;
         }).join('');
 
+        const newsletterSection = (data.sections || []).find(s => s.id === 'newsletter');
+        if (newsletterSection?.elements?.[0]) injectNewsletterScript(newsletterSection.elements[0]);
+
       } catch (err) {
         console.error('Failed to load meta.json:', err);
         content.innerHTML = `<p class="error-msg">Could not load content.<br>Please refresh the page.</p>`;
@@ -584,9 +654,9 @@
 
     /* ── Nav ────────────────────────────────────── */
     const NAV_MAP = {
-      author:  ['section-author'],
-      works:   ['section-works'],
-      contact: ['section-patreon', 'section-social'],
+      author:     ['section-author'],
+      works:      ['section-works'],
+      contact:    ['section-newsletter', 'section-patreon', 'section-social'],
     };
 
     function navScrollTo(key) {

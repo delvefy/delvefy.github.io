@@ -40,6 +40,16 @@
       ]
     },
     {
+      "id": "newsletter",
+      "elements": [
+        {
+          "text": "Stay updated on new releases, chapters, and behind-the-scenes writing news.",
+          "scriptUid": "1c1bdadb38",
+          "scriptSrc": "https://victor-black.kit.com/1c1bdadb38/index.js"
+        }
+      ]
+    },
+    {
       "id": "patreon",
       "elements": [
         {
