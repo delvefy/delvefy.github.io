@@ -298,37 +298,39 @@
 
     /* ── Work item ──────────────────────────────── */
     .work-item {
-      display: grid;
-      grid-template-columns: 7rem 1fr;
-      column-gap: 1.25rem;
-      row-gap: 0.65rem;
-      padding: 1.75rem 0;
-      border-bottom: 1px solid var(--border);
-      align-items: start;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      padding: 1.75rem 1.4rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
     }
 
-    .work-item:first-child { padding-top: 0; }
-    .work-item:last-child  { border-bottom: none; padding-bottom: 0; }
+    .work-item:last-child { margin-bottom: 0; }
 
+    /* Cover as faded full-bleed background */
     .work-cover {
-      grid-column: 1;
-      grid-row: 1;
-      width: 7rem;
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .work-cover img {
       width: 100%;
-      height: auto;
-      border-radius: 4px;
-      display: block;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      opacity: 0.2;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0.3));
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0.3));
     }
 
-    .work-header { grid-column: 2; grid-row: 1; align-self: center; min-width: 0; }
-
-    .work-text { grid-column: 1 / -1; }
-
-    .read-btn { grid-column: 1 / -1; justify-self: start; }
+    .work-header, .work-text, .read-btn { position: relative; z-index: 1; min-width: 0; }
 
     /* ── Work category ──────────────────────────── */
     .work-category {
@@ -344,17 +346,12 @@
       border-bottom: 1px solid var(--border-hi);
     }
 
+    .work-category {
+      margin-bottom: 1.5rem;
+    }
+
     .work-category:not(:first-child) {
       margin-top: 1.5rem;
-    }
-
-    /* Avoid double line where a work-item border meets the category border */
-    .work-item:has(+ .work-category) {
-      border-bottom: none;
-    }
-
-    .work-category + .work-item {
-      padding-top: 1.75rem;
     }
 
     .work-title {
@@ -371,7 +368,7 @@
     .work-text {
       font-size: 1rem;
       line-height: 1.65;
-      color: var(--text-body);
+      color: #ffffff;
     }
 
     /* ── Read button ────────────────────────────── */
@@ -508,12 +505,7 @@
 
       .author-img { width: 6.5rem; height: 6.5rem; }
 
-/* Works: cover spans all rows, content stacks in col 2 */
-      .work-item   { grid-template-columns: 9rem 1fr; column-gap: 1.5rem; }
-      .work-cover  { grid-row: 1 / 4; align-self: start; width: 9rem; }
-      .work-header { grid-column: 2; grid-row: 1; }
-      .work-text   { grid-column: 2; grid-row: 2; }
-      .read-btn    { grid-column: 2; grid-row: 3; justify-self: start; }
+      .work-item   { padding: 2.25rem 2rem; }
 
       .work-title  { font-size: 2.4rem; }
       .author-name { font-size: 2.4rem; }
